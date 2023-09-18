@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_chat import message
 from langchain.chains import ConversationalRetrievalChain
-from langchain.document_loaders import PyPDFLoader, DirectoryLoader
+from langchain.document_loaders import HuggingFaceDatasetLoader
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.llms import CTransformers
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -10,11 +10,17 @@ from langchain.memory import ConversationBufferMemory
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 
 #load the pdf files from the path
-loader = DirectoryLoader('data/',glob="*.pdf",loader_cls=PyPDFLoader)
+#loader = DirectoryLoader('data/',glob="*.pdf",loader_cls=PyPDFLoader)
+#documents = loader.load()
+
+dataset_name = "jayantdocplix/medical_dataset"
+page_content_column = "text"
+
+loader = HuggingFaceDatasetLoader(dataset_name, page_content_column)
 documents = loader.load()
 
 #split text into chunks
-text_splitter  = RecursiveCharacterTextSplitter(chunk_size=500,chunk_overlap=50)
+text_splitter  = RecursiveCharacterTextSplitter(chunk_size=1000,chunk_overlap=20)
 text_chunks = text_splitter.split_documents(documents)
 
 #create embeddings
