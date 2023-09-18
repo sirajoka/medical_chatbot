@@ -11,3 +11,4 @@ altair
 tiktoken
 huggingface-hub
 datasets
+ctransformers
