@@ -7,7 +7,7 @@ transformers
 sentence_transformers
 streamlit
 streamlit_chat
-faiss-gpu
+faiss-cpu
 altair
 tiktoken
 huggingface-hub
