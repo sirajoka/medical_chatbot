@@ -7,6 +7,7 @@ from langchain.llms import CTransformers
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
 from langchain.memory import ConversationBufferMemory
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 
 #load the pdf files from the path
 loader = DirectoryLoader('data/',glob="*.pdf",loader_cls=PyPDFLoader)
@@ -25,13 +26,16 @@ vector_store = FAISS.from_documents(text_chunks,embeddings)
 
 #create llm
 llm = CTransformers(model="model.bin",model_type="llama",
-                    config={'max_new_tokens':128,'temperature':0.01})
+                    config={'max_new_tokens':128,'temperature':0.01}, streaming=True, callbacks=[StreamingStdOutCallbackHandler()])
 
 memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
 chain = ConversationalRetrievalChain.from_llm(llm=llm,chain_type='stuff',
                                               retriever=vector_store.as_retriever(search_kwargs={"k":2}),
                                               memory=memory)
+
+
+
 st.title("Medical Consultation AI👨‍⚕️")
 def conversation_chat(query):
     result = chain({"question": query, "chat_history": st.session_state['history']})
