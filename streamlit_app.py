@@ -27,7 +27,7 @@ bnb_config = transformers.BitsAndBytesConfig(
 )
 
 # begin initializing HF items, you need an access token
-hf_auth = HUGGIN
+hf_auth = HUGGINGFACEHUB_API_TOKEN
 model_config = transformers.AutoConfig.from_pretrained(
     model_id,
     use_auth_token=hf_auth
