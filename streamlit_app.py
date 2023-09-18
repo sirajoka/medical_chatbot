@@ -13,6 +13,7 @@ from torch import cuda, bfloat16
 import transformers
 from transformers import StoppingCriteria, StoppingCriteriaList
 from langchain.llms import HuggingFacePipeline
+import dotenv
 
 model_id = 'meta-llama/Llama-2-7b-chat-hf'
 device = f'cuda:{cuda.current_device()}' if cuda.is_available() else 'cpu'
@@ -25,9 +26,10 @@ bnb_config = transformers.BitsAndBytesConfig(
     bnb_4bit_use_double_quant=True,
     bnb_4bit_compute_dtype=bfloat16
 )
+dotenv.load_dotenv()
 
 # begin initializing HF items, you need an access token
-hf_auth = HUGGINGFACEHUB_API_TOKEN
+hf_auth = os.getenv('HUGGINGFACEHUB_API_TOKEN')
 model_config = transformers.AutoConfig.from_pretrained(
     model_id,
     use_auth_token=hf_auth
