@@ -18,13 +18,13 @@ text_chunks = text_splitter.split_documents(documents)
 
 #create embeddings
 embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2",
-                                   model_kwargs={'device':"cpu"})
+                                   model_kwargs={'device':"gpu"})
 
 #vectorstore
 vector_store = FAISS.from_documents(text_chunks,embeddings)
 
 #create llm
-llm = CTransformers(model="llama-2-7b-chat.ggmlv3.q4_0.bin",model_type="llama",
+llm = CTransformers(model="model.bin",model_type="llama",
                     config={'max_new_tokens':128,'temperature':0.01})
 
 memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
