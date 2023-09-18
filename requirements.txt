@@ -10,3 +10,4 @@ faiss-cpu
 altair
 tiktoken
 huggingface-hub
+datasets
